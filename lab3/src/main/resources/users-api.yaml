@@ -1,0 +1,175 @@
+openapi: 3.0.3
+info:
+  title: Users REST API
+  description: REST API umozliwiajace zarzadzanie uzytkownikami
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+    description: localhost
+security:
+  - BasicAuth: []
+  - BearerAuth: []
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    User:
+      type: object
+      required:
+        - userId
+        - firstName
+        - lastName
+        - age
+        - pesel
+        - citizenship
+        - email
+      properties:
+        userId:
+          type: integer
+          example: 123
+        firstName:
+          type: string
+          example: "Mikolaj"
+          maxLength: 50
+        lastName:
+          type: string
+          example: "Stefaniszyn"
+          maxLength: 50
+        age:
+          type: integer
+          example: 25
+          minimum: 24
+        pesel:
+          type: string
+          pattern: "^[0-9]{11}$"
+          example: "00231206497"
+        citizenship:
+          type: string
+          enum: [PL, DE, UK]
+          example: "PL"
+        email:
+          type: string
+          format: email
+          example: "sm46651@zut.edu.pl"
+    RequestMetadata:
+      type: object
+      properties:
+        requestId:
+          type: string
+          example: "abc123"
+        requestDate:
+          type: string
+          format: date-time
+          example: "2024-11-15T12:34:56Z"
+    UserResponse:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - $ref: '#/components/schemas/RequestMetadata'
+
+paths:
+  /users:
+    get:
+      summary: Pobierz liste uzytkownikow
+      description: Zwraca liste wszystkich uzytkownikow
+      security:
+        - BasicAuth: []
+      responses:
+        '200':
+          description: Lista uzytkownikow
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+    post:
+      summary: Dodaj nowego uzytkownika
+      description: Dodaje uzytkownika do systemu
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Uzytkownik zostal utworzony
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+
+  /users/{userId}:
+    get:
+      summary: Pobierz uzytkownika po ID
+      description: Zwraca szczegoly uzytkownika na podstawie unikalnego identyfikatora `userId`
+      security:
+        - BasicAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 123
+      responses:
+        '200':
+          description: Szczegoly uzytkownika
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description: Uzytkownik nie znaleziony
+    put:
+      summary: Zaktualizuj dane uzytkownika
+      description: Zmienia dane uzytkownika na podstawie unikalnego identyfikatora `userId`
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 123
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Uzytkownik zostal zaktualizowany
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description: Uzytkownik nie znaleziony
+    delete:
+      summary: Usun uzytkownika
+      description: Usuwa uzytkownika na podstawie unikalnego identyfikatora `userId`
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 123
+      responses:
+        '204':
+          description: Uzytkownik zostal usuniety
+        '404':
+          description: Uzytkownik nie znaleziony

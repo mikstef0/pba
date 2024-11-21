@@ -1,0 +1,66 @@
+<wsdl:definitions targetNamespace="http://spring.io/guides/gs-producingweb-service">
+    <wsdl:types>
+        <xs:schema elementFormDefault="qualified" targetNamespace="http://example.com/users">
+            <xs:simpleType name="CitizenshipType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="PL"/>
+                    <xs:enumeration value="DE"/>
+                    <xs:enumeration value="UK"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:complexType name="UserType">
+                <xs:sequence>
+                    <xs:element name="firstName" type="xs:string"/>
+                    <xs:element name="lastName" type="xs:string"/>
+                    <xs:element name="age" type="xs:int"/>
+                    <xs:element name="pesel" type="xs:string"/>
+                    <xs:element name="citizenship" type="CitizenshipType"/>
+                    <xs:element name="email" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="getUserRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="pesel" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getUserResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="user" type="UserType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getUserResponse">
+        <wsdl:part element="sch:getUserResponse" name="getUserResponse"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getUserRequest">
+        <wsdl:part element="sch:getUserRequest" name="getUserRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="UserssPort">
+        <wsdl:operation name="getUser">
+            <wsdl:input message="tns:getUserRequest" name="getUserRequest"></wsdl:input>
+            <wsdl:output message="tns:getUserResponse" name="getUserResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="UserssPortSoap11" type="tns:UserssPort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getUser">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getUserRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getUserResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="UserssPortService">
+        <wsdl:port binding="tns:UserssPortSoap11" name="UserssPortSoap11">
+            <soap:address location="http://localhost:8080/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

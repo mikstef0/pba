@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/users"
+           xmlns="http://example.com/users"
+           elementFormDefault="qualified">
+
+    <xs:simpleType name="CitizenshipType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PL"/>
+            <xs:enumeration value="DE"/>
+            <xs:enumeration value="UK"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="UserType">
+        <xs:sequence>
+            <xs:element name="firstName" type="xs:string"/>
+            <xs:element name="lastName" type="xs:string"/>
+            <xs:element name="age" type="xs:int"/>
+            <xs:element name="pesel" type="xs:string"/>
+            <xs:element name="citizenship" type="CitizenshipType"/>
+            <xs:element name="email" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="getUserRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="pesel" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUserResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="user" type="UserType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
