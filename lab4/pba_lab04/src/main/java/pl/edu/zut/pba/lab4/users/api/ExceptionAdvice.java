@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import pl.edu.zut.pba.lab4.users.api.model.Error;
+import pl.edu.zut.pba.lab04.users.api.model.Error;
 
 @ControllerAdvice
 public class ExceptionAdvice

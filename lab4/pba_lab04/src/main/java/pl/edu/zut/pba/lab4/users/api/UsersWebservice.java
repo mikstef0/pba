@@ -19,11 +19,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import pl.edu.zut.pba.lab4.users.UserMapper;
 import pl.edu.zut.pba.lab4.users.UserService;
-import pl.edu.zut.pba.lab4.users.api.model.CreateRequest;
-import pl.edu.zut.pba.lab4.users.api.model.UpdateRequest;
-import pl.edu.zut.pba.lab4.users.api.model.User;
-import pl.edu.zut.pba.lab4.users.api.model.UserListResponse;
-import pl.edu.zut.pba.lab4.users.api.model.UserResponse;
+import pl.edu.zut.pba.lab04.users.api.UsersApi;
+import pl.edu.zut.pba.lab04.users.api.model.CreateRequest;
+import pl.edu.zut.pba.lab04.users.api.model.UpdateRequest;
+import pl.edu.zut.pba.lab04.users.api.model.User;
+import pl.edu.zut.pba.lab04.users.api.model.UserListResponse;
+import pl.edu.zut.pba.lab04.users.api.model.UserResponse;
 
 @RestController
 @RequiredArgsConstructor
